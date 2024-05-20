@@ -10,7 +10,7 @@ def calc_diff(im1, im2):
 
 
 mask = 'Detect_vitri\\parking-space-counter\\mask_hust_c7.png'
-video_path = 'Detect_vitri\\parking-space-counter\\hust_c7.png'
+video_path = 'Detect_vitri\\parking-space-counter\\hust_c7.mp4'
 
 
 mask = cv2.imread(mask, 0)

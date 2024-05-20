@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 
 
 # prepare data
-input_dir = ''
+input_dir = 'Detect_vitri\\image_classification_scikit_learn\\data'
 categories = ['empty', 'not_empty']
 
 data = []

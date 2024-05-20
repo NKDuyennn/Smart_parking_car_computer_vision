@@ -8,7 +8,7 @@ import cv2
 EMPTY = True
 NOT_EMPTY = False
 
-MODEL = pickle.load(open("F:\Work\SPARC\Smart_parking_car_computer_vision\Detect_vitri\parking-space-counter\model.p", "rb"))
+MODEL = pickle.load(open("Detect_vitri\\parking-space-counter\\model.p", "rb"))
 
 
 def empty_or_not(spot_bgr):
