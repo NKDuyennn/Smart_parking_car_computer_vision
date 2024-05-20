@@ -2,7 +2,10 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-from util import get_parking_spots_bboxes, empty_or_not
+import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
+from simple_CNN_util import get_parking_spots_bboxes, empty_or_not
 
 
 def calc_diff(im1, im2):
@@ -28,7 +31,7 @@ previous_frame = None
 
 frame_nmr = 0
 ret = True
-step = 30
+step = 10
 while ret:
     ret, frame = cap.read()
 
