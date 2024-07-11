@@ -5,8 +5,8 @@ import numpy as np
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
-from simple_CNN_util import get_parking_spots_bboxes, empty_or_not
-
+# from simple_CNN_util import get_parking_spots_bboxes, empty_or_not
+from util import get_parking_spots_bboxes, empty_or_not
 
 def calc_diff(im1, im2):
     return np.abs(np.mean(im1) - np.mean(im2))
