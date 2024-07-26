@@ -2,46 +2,41 @@ import os
 import cv2
 import matplotlib.pyplot as plt
 
-output_dir = 'C:\\Users\\Admin\\Documents\\GitHub\\Smart_parking_car_computer_vision\\Detect_vitri\\parking-space-counter\\data\\all'
-mask_path = 'Detect_vitri\\parking-space-counter\\mask_hust_c7.png'
-original_image_path = 'Detect_vitri\\parking-space-counter\\original.jpg'
+output_dir = 'C:/Users/DUYEN/OneDrive/Documents/GitHub/Smart_parking_car_computer_vision/Detect_vitri/parking-space-counter/data'
+mask_path = 'C:/Users/DUYEN/OneDrive/Documents/GitHub/Smart_parking_car_computer_vision/Detect_vitri/parking-space-counter/Mask_final.jpg'
+original_image_dir = 'C:/Users/DUYEN/OneDrive/Documents/GitHub/Smart_parking_car_computer_vision/Detect_vitri/parking-space-counter/data/original_images'
 
 mask = cv2.imread(mask_path, 0)
-original_image = cv2.imread(original_image_path)
 
-analysis = cv2.connectedComponentsWithStats(mask, 4, cv2.CV_32S)
-(totalLabels, label_ids, values, centroid) = analysis
+for original_image in os.listdir(original_image_dir):
 
-slots = []
-for i in range(1, totalLabels):
-    # Area of the component
-    area = values[i, cv2.CC_STAT_AREA]
+    if not os.path.isfile(os.path.join(original_image_dir, original_image)):
+        continue
+    image_path = os.path.join(original_image_dir, original_image)
+    image = cv2.imread(image_path)
 
-    # Now extract the coordinate points
-    x1 = values[i, cv2.CC_STAT_LEFT]
-    y1 = values[i, cv2.CC_STAT_TOP]
-    w = values[i, cv2.CC_STAT_WIDTH]
-    h = values[i, cv2.CC_STAT_HEIGHT]
+    if image is None:
+        print(f"Khong load duoc anh {original_image}.")
+        continue
 
-    # Coordinate of the bounding box
-    pt1 = (x1, y1)
-    pt2 = (x1 + w, y1 + h)
-    (X, Y) = centroid[i]
+    # Cat anh
+    analysis = cv2.connectedComponentsWithStats(mask, 4, cv2.CV_32S)
+    (totalLabels, labels_ids, values, centroids) = analysis
 
-    slots.append([x1, y1, w, h])
+    for i in range(1, totalLabels):
+        
+        x1 = values[i, cv2.CC_STAT_LEFT]
+        y1 = values[i, cv2.CC_STAT_TOP]
+        w = values[i, cv2.CC_STAT_WIDTH]
+        h = values[i, cv2.CC_STAT_HEIGHT]
 
-# Save each slot as a separate image
-for i, slot in enumerate(slots):
-    slot_number = i + 1  # Slot number starts from 1
-    x1, y1, w, h = slot
+        slot_image = image[y1:y1+h, x1:x1+w]
 
-    # Crop the slot from the original image
-    slot_image = original_image[y1:y1+h, x1:x1+w]
+        slot_output_path = os.path.join(output_dir, f'{os.path.splitext(original_image)[0]}_slot{i}.jpg')
 
-    # Save the slot image to the output directory
-    slot_output_path = os.path.join(output_dir, f'slot_{slot_number}.jpg')
-    cv2.imwrite(slot_output_path, slot_image)
+        cv2.imwrite(slot_output_path, slot_image)
 
-    # Optionally, display the slot image
-    plt.imshow(cv2.cvtColor(slot_image, cv2.COLOR_BGR2RGB))
-    plt.show()
+        plt.imshow(cv2.cvtColor(slot_image, cv2.COLOR_BGR2RGB))
+        plt.title(f'{original_image} - Slot {i}')
+        plt.show
+
